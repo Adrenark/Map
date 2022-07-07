@@ -1,0 +1,33 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+</head>
+<body>
+
+<div id="mapid" style="width: 1920px; height: 1080px;"></div>
+
+<script>
+
+
+var r= new XMLHttpRequest()        //tworzymy nowy obiekt typu XMLHttpRequest,
+r.open('GET','https://jsonplaceholder.typicode.com/users', true);
+
+r.send();
+
+r.onload = function(){
+    var data = JSON.parse(this.response);
+    console.log(data);
+    var map = L.map('mapid').setView([51.505, -0.09], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright%22%3EOpenStreetMap</a> contributors'
+    }).addTo(map);
+    for(var i=0; i<data.length; i++){
+        L.marker([data[i].address.geo.lat, data[i].address.geo.lng]).addTo(map).bindPopup(data[i].name, data[i].address.street);
+    }
+}
+
+ </script>
+</body>
+</html>
